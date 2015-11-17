@@ -11,6 +11,26 @@ void print(double* p, const int N, const double dx,
        cout << i*dx + xmin << "\t" << p[i] << endl;
 }
 
+void func(double*p, const int N, const double xmin, const double dx)
+{ double x;
+  for(int i = 0; i < N; i++){
+    x = xmin + i*dx;
+    p[i] = exp(-x*x);
+  }
+}
+  
+void deriva(double* p, const int N, const double dx)
+{ 
+  double pold = 0.0;	
+  double abhilfe;
+  for(int i = 0; i < N-1; i++){
+    abhilfe = p[i];
+    p[i] = (p[i+1] - pold)/(2.0*dx);    
+    pold = abhilfe;
+  }
+  p[N-1] = pold/(2.0*dx);  
+}
+
 
 int main(){
   const int N = 256;
@@ -19,8 +39,8 @@ int main(){
   const double xmin = -15;
   const double dx = (xmax-xmin)/(N-1);
 
-  // call to function which fills array p here
-  // call to functio which calculates the derivative
+  func(p, N, xmin, dx);
+  deriva(p, N, dx);
   print(p,N,dx,xmin);
 
   return 0;
